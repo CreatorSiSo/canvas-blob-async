@@ -13,7 +13,10 @@
 		"vite-plugin-babel": "^1.0.0"
 	},
 	"dependencies": {
+		"@types/pdfkit": "^0.12.6",
 		"jspdf": "^2.5.1",
-		"qr-code-styling": "^1.6.0-rc.1"
+		"pdfkit": "^0.13.0",
+		"qr-code-styling": "^1.6.0-rc.1",
+		"svg2pdf.js": "^2.2.0"
 	}
 }

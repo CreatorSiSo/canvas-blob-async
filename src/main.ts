@@ -1,10 +1,13 @@
 import "./style.css";
 import QRCodeStyling from "qr-code-styling";
+import { jsPDF } from "jspdf";
+import "svg2pdf.js";
 
-const labelLink = "https://co2unt.com/de/zertifikate/IX101-68049-56377";
+const id = "IX101-68049-56377";
+const certificateLink = `https://123456.com/de/zertifikate/${id}`;
 
 const qrcode = new QRCodeStyling({
-	data: labelLink,
+	data: certificateLink,
 	type: "svg",
 	width: 300,
 	height: 300,
@@ -21,27 +24,24 @@ const qrcode = new QRCodeStyling({
 	},
 });
 
+const doc = new jsPDF({
+	orientation: "landscape",
+	unit: "cm",
+	format: [16, 4.5],
+});
+
 // Preview
-{
-	const previewElement = document.getElementById("preview") as HTMLDivElement;
-	qrcode.append(previewElement);
-}
+const preview = document.getElementById("preview") as HTMLImageElement;
+
+preview.src = doc.output("bloburi").toString();
 
 // Downloading
-{
-	const downloadSVGButton = document.getElementById(
-		"download-svg"
-	) as HTMLButtonElement;
+const downloadPDFButton = document.getElementById(
+	"download-pdf"
+) as HTMLButtonElement;
 
-	downloadSVGButton.addEventListener("click", (_) =>
-		qrcode.download({ name: "IX101-68049-56377", extension: "svg" })
-	);
-
-	// const downloadPDFButton = document.getElementById(
-	// 	"download-pdf"
-	// ) as HTMLButtonElement;
-
-	// downloadPDFButton.addEventListener("click", (_) =>
-	// 	qrcode.download({ name: "IX101-68049-56377", extension: "svg" })
-	// );
-}
+downloadPDFButton.addEventListener(
+	"click",
+	(_) => doc.save(`${id}.pdf`)
+	// console.log(doc.output("dataurlstring", { filename: `${id}.pdf` }))
+);
