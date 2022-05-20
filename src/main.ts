@@ -1,7 +1,5 @@
 import "./style.css";
 import QRCodeStyling from "qr-code-styling";
-import { jsPDF } from "jspdf";
-import "svg2pdf.js";
 
 const id = "IX101-68049-56377";
 const certificateLink = `https://123456.com/de/zertifikate/${id}`;
@@ -23,25 +21,16 @@ const qrcode = new QRCodeStyling({
 		errorCorrectionLevel: "H",
 	},
 });
-
-const doc = new jsPDF({
-	orientation: "landscape",
-	unit: "cm",
-	format: [16, 4.5],
-});
-
-// Preview
-const preview = document.getElementById("preview") as HTMLImageElement;
-
-preview.src = doc.output("bloburi").toString();
+const previewQrcode = document.getElementById("preview");
+if (previewQrcode) {
+	qrcode.append(previewQrcode);
+}
 
 // Downloading
-const downloadPDFButton = document.getElementById(
-	"download-pdf"
+const downloadSVGButton = document.getElementById(
+	"download-svg"
 ) as HTMLButtonElement;
 
-downloadPDFButton.addEventListener(
-	"click",
-	(_) => doc.save(`${id}.pdf`)
-	// console.log(doc.output("dataurlstring", { filename: `${id}.pdf` }))
+downloadSVGButton.addEventListener("click", (_) =>
+	qrcode.download({ name: id, extension: "svg" })
 );
